@@ -1,0 +1,20 @@
+name: Remote Trigger Unfollow
+on:
+  repository_dispatch:
+    types: [unfollow_event] # cron-job.orgから送るイベント名
+  workflow_dispatch:
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm install axios
+      - run: node index.js
+        env:
+          MK_TOKEN: ${{ secrets.MK_TOKEN }}
+          MK_DOMAIN: 'misskey.io'
+          MY_ID: ${{ secrets.MY_ID }}
